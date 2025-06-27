@@ -41,13 +41,19 @@ Create the conda environment:
 conda_env_name=vlfm
 conda create -n $conda_env_name python=3.9 -y
 conda activate $conda_env_name
+conda install pytorch==2.1.0 torchvision==0.16.0 torchaudio==2.1.0 pytorch-cuda=11.8 -c pytorch -c nvidia
 pip install torch==1.12.1+cu113 torchvision==0.13.1+cu113 -f https://download.pytorch.org/whl/torch_stable.html
 pip install git+https://github.com/IDEA-Research/GroundingDINO.git@eeba084341aaa454ce13cb32fa7fd9282fc73a67 salesforce-lavis==1.0.2
 ```
 If you are using habitat and are doing simulation experiments, install this repo into your env with the following:
 ```bash
-pip install -e .[habitat]
+pip install -e ".[habitat]"
 ```
+```bash
+conda install habitat-sim=0.2.4 withbullet -c conda-forge -c aihabitat
+
+```
+
 If you are using the Spot robot, install this repo into your env with the following:
 ```bash
 pip install -e .[reality]
@@ -66,7 +72,9 @@ First, set the following variables during installation (don't need to put in .ba
 MATTERPORT_TOKEN_ID=<FILL IN FROM YOUR ACCOUNT INFO IN MATTERPORT>
 MATTERPORT_TOKEN_SECRET=<FILL IN FROM YOUR ACCOUNT INFO IN MATTERPORT>
 DATA_DIR=</path/to/vlfm/data>
-
+MATTERPORT_TOKEN_ID=ba034ce267462954
+MATTERPORT_TOKEN_SECRET=595bb7584e1c33d49b641b467fa9e40f
+DATA_DIR=./
 # Link to the HM3D ObjectNav episodes dataset, listed here:
 # https://github.com/facebookresearch/habitat-lab/blob/main/DATASETS.md#task-datasets
 # From the above page, locate the link to the HM3D ObjectNav dataset.
@@ -86,7 +94,12 @@ python -m habitat_sim.utils.datasets_download \
   --username $MATTERPORT_TOKEN_ID --password $MATTERPORT_TOKEN_SECRET \
   --uids hm3d_val_v0.2 \
   --data-path $DATA_DIR &&
+python -m habitat_sim.utils.datasets_download \
+  --username $MATTERPORT_TOKEN_ID --password $MATTERPORT_TOKEN_SECRET \
+  --uids hm3d_minival_v0.2 \
+  --data-path $DATA_DIR
 
+  
 # Download HM3D ObjectNav dataset episodes
 wget $HM3D_OBJECTNAV &&
 unzip objectnav_hm3d_v1.zip &&
@@ -118,7 +131,7 @@ To evaluate on MP3D, run the following:
 ```bash
 python -m vlfm.run habitat.dataset.data_path=data/datasets/objectnav/mp3d/val/val.json.gz
 ```
-
+conda install -c conda-forge ffmpeg
 ## :newspaper: License
 
 VLFM is released under the [MIT License](LICENSE). This code was produced as part of Naoki Yokoyama's internship at the Boston Dynamics AI Institute in Summer 2023 and is provided "as is" without active maintenance. For questions, please contact [Naoki Yokoyama](http://naoki.io) or [Jiuguang Wang](https://www.robo.guru).

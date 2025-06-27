@@ -37,6 +37,8 @@ habitat_baselines:
   torch_gpu_id: 0
   tensorboard_dir: "tb"
   video_dir: "video_dir"
+  # video_option: ["disk"]
+  
   test_episode_count: -1
   checkpoint_folder: "data/new_checkpoints"
   trainer_name: "vlfm"
@@ -48,7 +50,9 @@ habitat_baselines:
   force_torch_single_threaded: True
 
   eval:
+    video_option: ["disk"]
     split: "val"
+  
 
   rl:
 
